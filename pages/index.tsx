@@ -1,7 +1,26 @@
-import Head from 'next/head';
-import { links } from '../data/links';
+import Head from "next/head";
+import { gql, useQuery } from "@apollo/client";
+import type { Link } from "@prisma/client";
+
+const AllLinksQuery = gql`
+  query {
+    links {
+      id
+      title
+      url
+      description
+      imageUrl
+      category
+    }
+  }
+`;
 
 export default function Home() {
+  const { data, loading, error } = useQuery(AllLinksQuery);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Oh no... {error.message}</p>;
+
   return (
     <div>
       <Head>
@@ -11,15 +30,15 @@ export default function Home() {
 
       <div className="container mx-auto max-w-5xl my-20">
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {links.map((link) => (
-            <li key={link.id} className="shadow  max-w-md  rounded">
+          {data.links.map((link: Link) => (
+            <li key={link.title} className="shadow  max-w-md  rounded">
               <img className="shadow-sm" src={link.imageUrl} />
               <div className="p-5 flex flex-col space-y-2">
                 <p className="text-sm text-blue-500">{link.category}</p>
                 <p className="text-lg font-medium">{link.title}</p>
                 <p className="text-gray-600">{link.description}</p>
                 <a href={link.url} className="flex hover:text-blue-500">
-                  {link.url.replace(/(^\w+:|^)\/\//, '')}
+                  {link.url.replace(/(^\w+:|^)\/\//, "")}
                   <svg
                     className="w-4 h-4 my-1"
                     fill="currentColor"
