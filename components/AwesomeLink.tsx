@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface Props {
   imageUrl: string;
@@ -6,7 +6,7 @@ interface Props {
   title: string;
   category: string;
   description: string;
-  id: number;
+  id: string;
 }
 
 export const AwesomeLink: React.FC<Props> = ({
@@ -26,7 +26,7 @@ export const AwesomeLink: React.FC<Props> = ({
         <p className="text-gray-600">{description}</p>
         <a href={url} className="flex hover:text-blue-500">
           {/* removes https from url */}
-          {url.replace(/(^\w+:|^)\/\//, '')}
+          {url.replace(/(^\w+:|^)\/\//, "")}
           <svg
             className="w-6 h-6"
             fill="currentColor"
